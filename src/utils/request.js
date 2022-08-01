@@ -4,18 +4,18 @@ import axios from 'axios'
 import localCache from '@/utils/cache'
 import { ElMessage } from 'element-plus'
 
-export const baseURL = 'http://192.168.0.110:10719/'
-const instance = axios.create({
+export const baseURL = 'http://192.168.0.112:10719'
+const hrequest = axios.create({
   baseURL,
   timeout: 5000
 })
 
 // 请求拦截器
-instance.interceptors.request.use(config => {
+hrequest.interceptors.request.use(config => {
   // 2. 判断是否有token
   const token = localCache.getCache('token')
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.token = token
   }
   return config
 }, err => {
@@ -23,10 +23,10 @@ instance.interceptors.request.use(config => {
 })
 
 // 响应拦截器
-instance.interceptors.response.use(res => res.data, err => {
+hrequest.interceptors.response.use(res => res.data, err => {
   // 401 状态码，进入该函数
   if (err.response && err.response.status === 401) {
-    localCache.deleteCache('token')
+    // localCache.deleteCache('token')
     ElMessage.error('token失效，请重新登录！')
     console.log('401')
   } else if (err.response && err.response.status === 403) {
@@ -42,6 +42,7 @@ instance.interceptors.response.use(res => res.data, err => {
   return Promise.reject(err)
 })
 
+export default hrequest
 // 请求工具函数 v3组件写法
 // export default (url, method, submitData) => {
 //   // 负责发请求：请求地址，请求方式，提交的数据

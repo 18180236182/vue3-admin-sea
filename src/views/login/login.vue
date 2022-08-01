@@ -97,7 +97,12 @@ export default {
           // todo
           // 调接口 判断用户名、密码是否正确
           //  ElMessage.error('用户名字或者密码错误或者未注册')
-          Store.dispatch('login/accountLoginAction')
+          const data = {
+            adminName: account.name,
+            adminPass: account.password,
+            client: '管理端'
+          }
+          Store.dispatch('login/accountLoginAction', data)
         } else {
           console.log('填写错误')
         }

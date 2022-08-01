@@ -15,7 +15,7 @@
             <div class="user-information">
               <span>{{ date }}</span>
               <el-avatar :size="45" :src="circleUrl" style="margin-right: 10px"/>
-              <div class="name">张三</div>
+              <div class="name">{{ name }}</div>
               <div class="user-information-name">
                 <!--  姓名下拉菜单  -->
                 <el-dropdown trigger="click">
@@ -24,11 +24,12 @@
                  </span>
                   <template #dropdown>
                     <el-dropdown-menu style="width: 160px; height: 100px">
-                      <el-dropdown-item style="height: 40px; display: flex; justify-content: center" @click="ModifyPassword()">
+                      <el-dropdown-item style="height: 40px; display: flex; justify-content: center"
+                                        @click="ModifyPassword()">
                         <img alt="" src="../../assets/mima_icon@2x.png" style="margin-right: 5px">
                         <span>修改密码</span>
                       </el-dropdown-item>
-                      <el-dropdown-item style="height: 40px; display: flex; justify-content: center">
+                      <el-dropdown-item style="height: 40px; display: flex; justify-content: center" @click="logout()">
                         <img alt="" src="../../assets/tuichu_icon@2x.png" style="margin-right: 5px">
                         <span>退出系统</span>
                       </el-dropdown-item>
@@ -94,7 +95,7 @@ import localCache from '@/utils/cache'
 import formatter from '@/utils/time'
 import { useRoute, useRouter } from 'vue-router/dist/vue-router'
 import { pathMapToMenu } from '@/utils/utlis'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 import password from '@/views/main/components/password'
 
 export default {
@@ -110,8 +111,12 @@ export default {
       console.log('xxxxxx')
       dialogVisible.value = true
     }
-    // 头像
+    const store = useStore()
+    // 姓名
+    const name = computed(() => store.state.login.userInfo.findPersonModel.fullName)
+    // 顶部数据
     const state = reactive({
+      // 头像
       circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
     })
     // 路由
@@ -145,13 +150,20 @@ export default {
       date.value = formatter(new Date())
     }
 
+    // 退出登录
+    const logout = () => {
+      // todo
+    }
+
     return {
+      name,
       ModifyPassword,
       dialogVisible,
       ...toRefs(state),
       date,
       defaultValue,
       menus,
+      logout,
       handleMenuItemClick
     }
   }

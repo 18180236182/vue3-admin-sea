@@ -14,13 +14,13 @@
         label-width="100px"
       >
         <el-form-item label="原密码">
-          <el-input v-model="formLabelAlign.oldPassWord" disabled  placeholder="请输入原密码" style="height: 50px"/>
+          <el-input v-model="formLabelAlign.oldPassWord" disabled placeholder="请输入原密码" style="height: 50px"/>
         </el-form-item>
         <el-form-item label="新密码" prop="newPassWord">
-          <el-input v-model="formLabelAlign.newPassWord" placeholder="请输入6-12位非特殊字符" style="height: 50px" />
+          <el-input v-model="formLabelAlign.newPassWord" placeholder="请输入6-12位非特殊字符" style="height: 50px"/>
         </el-form-item>
         <el-form-item label="确认密码" prop="newPassWordTo">
-          <el-input v-model="formLabelAlign.newPassWordTo" placeholder="请确定新密码" style="height: 50px" />
+          <el-input v-model="formLabelAlign.newPassWordTo" placeholder="请确定新密码" style="height: 50px"/>
         </el-form-item>
       </el-form>
     </div>
@@ -35,10 +35,10 @@
 </template>
 
 <script>
-// import { ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { computed, reactive, ref } from 'vue'
-// import { ref } from 'vue'
+import { useStore } from 'vuex'
+// import { loginOut } from '@/api/login'
 
 export default {
   name: 'password',
@@ -49,9 +49,10 @@ export default {
     }
   },
   setup (props, { emit }) {
+    const Store = useStore()
     // 表单数据
     const formLabelAlign = reactive({
-      oldPassWord: '',
+      oldPassWord: '123456',
       newPassWord: '',
       newPassWordTo: ''
     })
@@ -78,7 +79,11 @@ export default {
         }
       ],
       newPassWordTo: [
-        { required: true, validator: validatePass2, trigger: 'change' }
+        {
+          required: true,
+          validator: validatePass2,
+          trigger: 'change'
+        }
       ]
     })
     // 弹层显示
@@ -101,10 +106,22 @@ export default {
         })
     }
 
+    // 修改密码携带参数 用户id
+    // const Id = computed(() => Store.state.login.userInfo.findPersonModel.adminId)
+    // const Name = computed(() => Store.state.login.userInfo.findPersonModel.adminName)
     // 确定按钮
     const btnOk = () => {
-      formRef.value.validate((valid) => {
+      formRef.value.validate(async (valid) => {
         if (valid) {
+          const data = {
+            adminId: Store.state.login.userInfo.findPersonModel.adminId,
+            adminName: Store.state.login.userInfo.findPersonModel.adminName,
+            adminPass: formLabelAlign.newPassWordTo
+          }
+          console.log(data)
+          // const res = await loginOut(JSON.stringify(data))
+          // console.log(res)
+          // todo 修改成功弹层
           dialogShow.value = false
         } else {
           console.log('error submit!')
@@ -127,7 +144,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-/deep/.el-dialog__body {
+/deep/ .el-dialog__body {
   padding: 60px !important;
 }
 </style>
