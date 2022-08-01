@@ -4,7 +4,7 @@ import axios from 'axios'
 import localCache from '@/utils/cache'
 import { ElMessage } from 'element-plus'
 
-export const baseURL = ''
+export const baseURL = 'http://192.168.0.110:10719/'
 const instance = axios.create({
   baseURL,
   timeout: 5000
@@ -43,11 +43,11 @@ instance.interceptors.response.use(res => res.data, err => {
 })
 
 // 请求工具函数 v3组件写法
-export default (url, method, submitData) => {
-  // 负责发请求：请求地址，请求方式，提交的数据
-  return instance({
-    url,
-    method,
-    [method.toLowerCase() === 'get' ? 'params' : 'data']: submitData
-  })
-}
+// export default (url, method, submitData) => {
+//   // 负责发请求：请求地址，请求方式，提交的数据
+//   return instance({
+//     url,
+//     method,
+//     [method.toLowerCase() === 'get' ? 'params' : 'data']: submitData
+//   })
+// }

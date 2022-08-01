@@ -1,15 +1,45 @@
 <template>
-<div class="login">
-  <el-form ref="formRef" :model="account" :rules="rules" label-width="60px">
-    <el-form-item label="账号" prop="name">
-      <el-input v-model="account.name"/>
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input v-model="account.password"/>
-    </el-form-item>
-  </el-form>
-  <el-button  @click="handleLoginClick">登录</el-button>
-</div>
+  <div class="login">
+    <div class="login-center">
+      <div class="img">
+        <img alt="" src="@/assets/chahua_image.png">
+      </div>
+      <div class="right">
+        <div class="logo">
+          <div class="logo-all">
+            <img alt="" class="img-1" src="@/assets/logo@2x.png">
+            <img alt="" class="img-2" src="@/assets/远程协助@2x.png">
+          </div>
+        </div>
+        <div class="login-input">
+          <el-form
+            ref="formRef"
+            :model="account"
+            :rules="rules"
+            class="form"
+            label-position="top"
+            label-width="100px"
+            style="min-width: 404px"
+          >
+            <el-form-item label="账号" prop="name">
+              <el-input v-model="account.name" size="large"/>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="account.password" size="large"/>
+            </el-form-item>
+          </el-form>
+
+          <div class="checkbox">
+            <el-checkbox v-model="isKeepPassword">记住密码</el-checkbox>
+          </div>
+
+          <div class="login-btn">
+            <el-button type="primary" @click="handleLoginClick">登录</el-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -25,24 +55,16 @@ export default {
       name: [
         {
           required: true,
-          message: '用户名是必传内容~',
-          trigger: 'blur'
-        },
-        {
-          pattern: /^[a-z0-9]{5,10}$/,
-          message: '用户名必须是5~10个字母或者数字~',
+          message: '请填写账号',
           trigger: 'blur'
         }
       ],
       password: [
         {
           required: true,
-          message: '密码是必传内容~',
-          trigger: 'blur'
-        },
-        {
-          pattern: /^[a-z0-9]{3,}$/,
-          message: '用户名必须是3位以上的字母或者数字~',
+          min: 6,
+          max: 12,
+          message: '密码必须是6到12位以上的字母或者数字',
           trigger: 'blur'
         }
       ]
@@ -72,7 +94,9 @@ export default {
             localCache.deleteCache('name')
             localCache.deleteCache('password')
           }
-
+          // todo
+          // 调接口 判断用户名、密码是否正确
+          //  ElMessage.error('用户名字或者密码错误或者未注册')
           Store.dispatch('login/accountLoginAction')
         } else {
           console.log('填写错误')
@@ -90,6 +114,92 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less">
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #F5F5F5;
 
+  .login-center {
+    display: flex;
+    width: 1095px;
+    height: 581px;
+    background-color: #ffffff;
+    box-shadow: #d6d6d6 0px 0px 30px 5px; //边框内阴影
+
+    .img {
+      width: 533px;
+      height: 581px;
+    }
+
+    .right {
+      width: 562px;
+      height: 581px;
+
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 110px;
+
+        .logo-all {
+          padding-top: 30px;
+        }
+
+        .img-1 {
+          width: 80px;
+          height: 80px;
+        }
+
+        .img-2 {
+          padding-bottom: 10px;
+          width: 177px;
+          height: 44px;
+        }
+      }
+
+      .login-input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 471px;
+
+        .form {
+          .el-form-item__label {
+            margin-top: 20px;
+          }
+
+          .el-input {
+            width: 404px;
+            height: 60px;
+            border-radius: 10px;
+            //margin-bottom: 28px;
+          }
+
+          .el-form-item__label {
+            font-size: 20px;
+            margin-bottom: 18px;
+          }
+        }
+
+        .checkbox {
+          position: fixed;
+          margin-bottom: -155px;
+          margin-left: 325px;
+        }
+
+        .el-button {
+          margin-top: 40px;
+          border-radius: 10px;
+          width: 404px;
+          height: 60px;
+        }
+      }
+    }
+  }
+}
 </style>

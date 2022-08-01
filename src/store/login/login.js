@@ -1,6 +1,7 @@
 import localCache from '@/utils/cache'
 import router from '@/router'
 import { mapMenusToRoutes } from '@/utils/utlis'
+
 const login = ({
   namespaced: true,
   state () {
@@ -15,6 +16,7 @@ const login = ({
     changeToken (state, token) {
       state.token = token
     },
+
     // 用户信息
     changeUserInfo (state, userInfo) {
       state.userInfo = userInfo
@@ -41,16 +43,19 @@ const login = ({
         {
           id: 0,
           name: '协助记录',
+          imgurl: '@/assets/xiezhujilu_icon@2x.png',
           path: '/main/assist'
         },
         {
           id: 1,
           name: '账号管理',
+          imgurl: '@/assets/zhanghaoguanli_icon@2x.png',
           path: '/main/account'
         },
         {
           id: 2,
           name: '系统管理',
+          imgurl: '@/assets/xitngguanli_icon@2x.png',
           path: '/main/system'
         }
       ]

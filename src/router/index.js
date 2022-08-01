@@ -1,7 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-// import localCache from '@/utils/cache'
+import localCache from '@/utils/cache'
 import { firstMenu } from '@/utils/utlis'
-// import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import NProgress from 'nprogress' // 进度条
+import 'nprogress/nprogress.css' // 进度条样式
 const routes = [
   {
     path: '/',
@@ -32,18 +34,24 @@ const router = createRouter({
 
 // 点击登录事件
 router.beforeEach((to) => {
+  NProgress.start()
   // 前后端交互
-  // if (to.path !== '/login') {
-  //   const token = localCache.getCache('token')
-  //   // 没有token 返回登录页
-  //   if (!token) {
-  //     ElMessage.error('登录失败，请重新登录！')
-  //     return '/login'
-  //   }
-  // }
+  if (to.path !== '/login') {
+    const token = localCache.getCache('token')
+    // 没有token 返回登录页
+    if (!token) {
+      ElMessage.error('登录失败，请重新登录！')
+      return '/login'
+    }
+  }
   // 跳转到默认的第一个路由
   if (to.path === '/main') {
     return firstMenu.path
   }
+})
+
+router.afterEach(() => {
+  // finish progress bar
+  NProgress.done()
 })
 export default router
