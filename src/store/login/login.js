@@ -64,7 +64,7 @@ const login = ({
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
       // 发起请求
-      const res = await loginUser(JSON.stringify(data))
+      const res = await loginUser(data)
       console.log(res)
       if (res.code === 1001) {
         commit('changeToken', res.data.token)
