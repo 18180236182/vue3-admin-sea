@@ -17,6 +17,20 @@ hrequest.interceptors.request.use(config => {
   if (token) {
     config.headers.token = token
   }
+  // 对get请求含中括号的参数进行格式化
+  if (config.method === 'get') {
+    let url = config.url
+    url += '?'
+    const keys = Object.keys(config.params)
+    for (const key of keys) {
+      if (JSON.stringify(config.params[key]).indexOf('[') !== -1) {
+        url += `${key}=${encodeURIComponent(config.params[key])}&`
+        config.params = {}
+      }
+    }
+    url = url.substring(0, url.length - 1)
+    config.url = url
+  }
   return config
 }, err => {
   return Promise.reject(err)
