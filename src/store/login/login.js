@@ -1,8 +1,8 @@
 import localCache from '@/utils/cache'
 import router from '@/router'
-import { loginUser } from '@/api/login'
+// import { loginUser } from '@/api/login'
 import { mapMenusToRoutes } from '@/utils/utlis'
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
 
 const login = ({
   namespaced: true,
@@ -63,18 +63,19 @@ const login = ({
       ]
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
+      await router.push('/main/assist')
       // 发起请求
-      const res = await loginUser(data)
-      console.log(res)
-      if (res.code === 1001) {
-        commit('changeToken', res.data.token)
-        localCache.setCache('token', res.data.token)
-        commit('changeUserInfo', res.data)
-        localCache.setCache('userInfo', res.data)
-        await router.push('/main/assist')
-      } else {
-        ElMessage.warning(`${res.msg}`)
-      }
+      // const res = await loginUser(data)
+      // console.log(res)
+      // if (res.code === 1001) {
+      //   commit('changeToken', res.data.token)
+      //   localCache.setCache('token', res.data.token)
+      //   commit('changeUserInfo', res.data)
+      //   localCache.setCache('userInfo', res.data)
+      //   await router.push('/main/assist')
+      // } else {
+      //   ElMessage.warning(`${res.msg}`)
+      // }
     },
 
     /**
